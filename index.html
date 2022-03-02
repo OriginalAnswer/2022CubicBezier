@@ -9,11 +9,13 @@
     <title>Cubic-Bezier 2022</title>
     <style>
         :root{
+            --clr-ball: rgba(255, 157, 0, 0.662);
             --clr-bg:#f6f6f6;
             --clr-text:#1a1818;
 
-            --s-cnv : 300px;
+            --s-cnv : 250px;
             --s-bar : 3px;
+            --s-ball: 20px;
         }
         *{
             text-align: center;
@@ -24,10 +26,13 @@
             box-sizing: border-box;
         }
         /* ++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+        .fa-check{color: rgb(255, 0, 0);margin-left: 3px;}
+        #aniName-p-i{opacity: 1;}
+        #aniName-w-i{opacity: 0;}
         .hidden{display: none;}
         /* ++++++++++++++++++++++++++++++++++++++++++++++++++++ */
         html,body{
-            overflow: hidden;
+            /* overflow: hidden; */
             width: 100%;height: 100%;
         }
         body{padding: 30px; }
@@ -40,39 +45,64 @@
             justify-content: center;
         }
         main{
+            overflow-y: scroll;
             height: 100%;
             width: 100%;
             border: var(--clr-bg) solid 15px;
-            box-shadow:  -15px -15px 15px rgba(255,255,255,0.2),
-            15px 15px 15px rgba(0,0,0,0.1),
-            inset -5px -10px 10px rgba(255,255,255,0.2),
-            inset 0 5px 5px rgba(0,0,0,0.08);
-            border-radius: 40px;
             padding: 10px 20px;
         }
+        main,
+        .s0,
         .s1,
         .s2,
         .s3 .a1,
-        .s3 .a2{
+        .s3 .a2,
+        .s3 .a3,
+        .a4{
             border: var(--clr-bg) solid 5px;
-            box-shadow:  0 -15px 15px rgba(255,255,255,0.05),
+            box-shadow:  -10px -10px 15px rgba(212, 212, 212, 0.3),
+            10px 10px 15px rgba(107, 107, 107, 0.08),
             inset 0 -10px 10px rgba(255,255,255,0.05),
-            0 15px 15px rgba(0,0,0,0.08),
             inset 0 5px 5px rgba(0,0,0,0.08);
             border-radius: 40px;
             margin: 5px 0;
         }
-        .s1,
-        .s2{padding: 10px 40px;}
+        /* .s1{padding: 10px;} */
 
+        .s0,
+        .s1{width: calc(var(--s-cnv) + 50px);}
 
+        /* Ball */
+        .s0{padding: 0px;}
+        #ball{
+            animation-name: position;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+            left: 0%;
+            position: relative;
+            border-radius: 50px;
+            background-color: var(--clr-ball);
+            width: var(--s-ball); 
+            height: var(--s-ball);}
+        @keyframes position {
+            from{left: 0;}
+            to{left: calc(100% - var(--s-ball));}
+        }
+        @keyframes width {
+            from{width: var(--s-ball);}
+            to{width: 100%;}
+        }
+        /* +++++++ */
         /* Canvas */
         .s2{
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 350px;height: 350px;}
+            width: calc(var(--s-cnv) + 50px);
+            height: calc(var(--s-cnv) + 50px);
+        }
         .s2 canvas{
             background-color: rgba(127, 255, 212, 0.166);
             width: var(--s-cnv);height: var(--s-cnv);
@@ -98,48 +128,120 @@
         .s3{
             width: 100%;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             flex-wrap: wrap;
-            padding: 15px 10px;}
-        .s3 .a1,
-        .s3 .a2{padding: 15px;}
-        .a2 div{cursor: pointer;}
-        .a2 div:active{transform: scale(0.95);}
-        @media screen and {
-            
+            padding: 0 10px;}
+        .a1,
+        .a2,
+        .a3,
+        .a4{padding: 15px;}
+        .a4>#durationValue{margin-top: 10px;}
+
+        .a2 div,
+        .a3 div{cursor: pointer;}
+        
+        .a3-f{
+            height: 100%;
+            flex-direction: column;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .a2 div:active,
+        .a3-f div:active{transform: scale(0.95);}
+        @media screen and (max-width:450px){
+            :root{
+                --s-cnv:200px;
+            }
+            body{padding: 0;}
         }
     </style>
 </head>
 <body>
     <main>
-        <section class="s1"><h1>cubic-bezier(x1, y1, x2, y2)</h1></section>
+        <section class="s0">
+            <div id="ball"></div>
+        </section>
         <section class="s2">
             <canvas width="300px" height="300px" id="canvas"></canvas>
             <div class="bar1"></div>
             <div class="bar2"></div>
         </section>
+        <section class="s1"><h3>cubic-bezier(x1, y1, x2, y2)</h3></section>
         <section class="s3">
-            <article class="a1 ctrl">
+            <article class="a1">
                 <div>x1 : <input type="range" min="0" max="1" step="0.01"></div>
                 <div>y1 : <input type="range" min="-2" max="2" step="0.01"></div>
                 <div>x2 : <input type="range" min="0" max="1" step="0.01"></div>
                 <div>y2 : <input type="range" min="-2" max="2" step="0.01"></div>
             </article>
-            <article class="a2">
+            <form class="a2" onchange="setAniTiming()">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-l" value="linear">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-ei" value="ease-in">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-eio" value="ease-in-out">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-eo" value="ease-out">
-                <label for="ani-t-l"> <div class=""><span>linear</span></div></label>
-                <label for="ani-t-ei"> <div class=""><span>ease-in</span></div></label>
-                <label for="ani-t-eio"> <div class=""><span>ease-in-out</span></div></label>
-                <label for="ani-t-eo"> <div class=""><span>ease-out</span></div></label>
+                <label for="ani-t-l"> <div class="ani-t"><span>linear</span></div></label>
+                <label for="ani-t-ei"> <div class="ani-t"><span>ease-in</span></div></label>
+                <label for="ani-t-eio"> <div class="ani-t"><span>ease-in-out</span></div></label>
+                <label for="ani-t-eo"> <div class="ani-t"><span>ease-out</span></div></label>
+            </form>
+            <article class="a3">
+                <form class="a3-f" id="aniNameValue" onchange="setAniName()">
+                    <input class="hidden" type="radio" name="aniName" id="aniName-p" value="position">
+                    <label for="aniName-p"> <div class="aniName-p"><span>Position</span><span><i class="fas fa-check" id="aniName-p-i"></i></span></div></label>
+                    <input class="hidden" type="radio" name="aniName" id="aniName-w" value="width">
+                    <label for="aniName-w"> <div class="aniName-w"><span>Width</span><i class="fas fa-check" id="aniName-w-i"></i></div></label>
+                </form>
+            </article>
+            <article class="a4">
+                <div><span id="duration">Set Speed</span></div>
+                <input id="durationValue" oninput="setAniDuration()" type="range" min="0" max="3" value="1.5" step="0.01">
             </article>
         </section>
     </main>
 
     <script type="text/javascript">
-        const canvas = document.getElementById('canvas');
+        // const cv = document.getElementById('canvas');
+        // const ctx = cv.getContent('2d');
+        // const CV_W = cv.offsetWidth;
+        // const CV_H = cv.offsetHeight;
+        // cv.width = CV_W; 
+        // cv.height = CV_H; 
+        
+        
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // const aniNameValue = document.getElementById('aniNameValue')
+        // Ani Name
+        const ball = document.getElementById('ball');
+        const aniNamePI = document.getElementById('aniName-p-i');
+        const aniNameWI = document.getElementById('aniName-w-i');
+        function setAniName(){
+            let v = event.target.value;
+            ball.style.animationName = `${v}`;
+            if (event.target.value === 'position') {
+                aniNamePI.style.opacity = 1;
+                aniNameWI.style.opacity = 0;
+            } else {
+                aniNamePI.style.opacity = 0;
+                aniNameWI.style.opacity = 1;
+            }
+        }
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Ani Duration
+        const d = document.getElementById('duration');
+        function setAniDuration(){
+            let v = event.target.value;
+            d.innerText = `Duration : ${v} s`;
+            ball.style.animationDuration = `${v}s`;
+            
+        }
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Ani Timging Function
+        function setAniTiming(){
+            
+            ball.style.animationTimingFunction = `${event.target.value}`;
+        }
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
 </body>
 </html>
