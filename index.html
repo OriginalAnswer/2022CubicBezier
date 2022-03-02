@@ -4,12 +4,138 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e4704dcbbd.js" crossorigin="anonymous"></script>
     <title>Cubic-Bezier 2022</title>
+    <style>
+        :root{
+            --clr-bg:#f6f6f6;
+            --clr-text:#1a1818;
+
+            --s-cnv : 300px;
+            --s-bar : 3px;
+        }
+        *{
+            text-align: center;
+            font-family: 'Indie Flower', cursive;
+            font-weight: bolder;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        /* ++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+        .hidden{display: none;}
+        /* ++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+        html,body{
+            overflow: hidden;
+            width: 100%;height: 100%;
+        }
+        body{padding: 30px; }
+        body,main{
+            color: var(--clr-text);
+            background-color: var(--clr-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        main{
+            height: 100%;
+            width: 100%;
+            border: var(--clr-bg) solid 15px;
+            box-shadow:  -15px -15px 15px rgba(255,255,255,0.2),
+            15px 15px 15px rgba(0,0,0,0.1),
+            inset -5px -10px 10px rgba(255,255,255,0.2),
+            inset 0 5px 5px rgba(0,0,0,0.08);
+            border-radius: 40px;
+            padding: 10px 20px;
+        }
+        .s1,
+        .s2,
+        .s3 .a1,
+        .s3 .a2{
+            border: var(--clr-bg) solid 5px;
+            box-shadow:  0 -15px 15px rgba(255,255,255,0.05),
+            inset 0 -10px 10px rgba(255,255,255,0.05),
+            0 15px 15px rgba(0,0,0,0.08),
+            inset 0 5px 5px rgba(0,0,0,0.08);
+            border-radius: 40px;
+            margin: 5px 0;
+        }
+        .s1,
+        .s2{padding: 10px 40px;}
+
+
+        /* Canvas */
+        .s2{
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 350px;height: 350px;}
+        .s2 canvas{
+            background-color: rgba(127, 255, 212, 0.166);
+            width: var(--s-cnv);height: var(--s-cnv);
+        }
+        .s2 .bar1,
+        .s2 .bar2{
+            left: 20px;bottom: 20px;
+            background-color: #000;
+            position: absolute;}
+        .s2 .bar1{
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            width: var(--s-bar);height: var(--s-cnv);
+        }
+        .s2 .bar2{
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            width: var(--s-cnv);height: var(--s-bar);
+        }
+        /* ++++++ */
+
+        /* Controls */
+        .s3{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 15px 10px;}
+        .s3 .a1,
+        .s3 .a2{padding: 15px;}
+        .a2 div{cursor: pointer;}
+        .a2 div:active{transform: scale(0.95);}
+        @media screen and {
+            
+        }
+    </style>
 </head>
 <body>
-    <section><h1>cubic-bezier(x1, y1, x2, y2)</h1></section>
-    <section></section>
-    <section></section>
-    <section></section>
+    <main>
+        <section class="s1"><h1>cubic-bezier(x1, y1, x2, y2)</h1></section>
+        <section class="s2">
+            <canvas width="300px" height="300px"></canvas>
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+        </section>
+        <section class="s3">
+            <article class="a1 ctrl">
+                <div>x1 : <input type="range" min="0" max="300"></div>
+                <div>y2 : <input type="range" min="0" max="300"></div>
+                <div>x1 : <input type="range" min="0" max="300"></div>
+                <div>y2 : <input type="range" min="0" max="300"></div>
+            </article>
+            <article class="a2">
+                <input class="hidden" type="radio" name="aniTimging" id="ani-t-l" value="linear">
+                <input class="hidden" type="radio" name="aniTimging" id="ani-t-ei" value="ease-in">
+                <input class="hidden" type="radio" name="aniTimging" id="ani-t-eio" value="ease-in-out">
+                <input class="hidden" type="radio" name="aniTimging" id="ani-t-eo" value="ease-out">
+                <label for="ani-t-l"> <div class=""><span>linear</span></div></label>
+                <label for="ani-t-ei"> <div class=""><span>ease-in</span></div></label>
+                <label for="ani-t-eio"> <div class=""><span>ease-in-out</span></div></label>
+                <label for="ani-t-eo"> <div class=""><span>ease-out</span></div></label>
+            </article>
+        </section>
+    </main>
 </body>
 </html>
