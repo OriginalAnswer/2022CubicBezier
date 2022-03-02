@@ -114,16 +114,16 @@
     <main>
         <section class="s1"><h1>cubic-bezier(x1, y1, x2, y2)</h1></section>
         <section class="s2">
-            <canvas width="300px" height="300px"></canvas>
+            <canvas width="300px" height="300px" id="canvas"></canvas>
             <div class="bar1"></div>
             <div class="bar2"></div>
         </section>
         <section class="s3">
             <article class="a1 ctrl">
-                <div>x1 : <input type="range" min="0" max="300"></div>
-                <div>y2 : <input type="range" min="0" max="300"></div>
-                <div>x1 : <input type="range" min="0" max="300"></div>
-                <div>y2 : <input type="range" min="0" max="300"></div>
+                <div>x1 : <input type="range" min="0" max="1" step="0.01"></div>
+                <div>y1 : <input type="range" min="-2" max="2" step="0.01"></div>
+                <div>x2 : <input type="range" min="0" max="1" step="0.01"></div>
+                <div>y2 : <input type="range" min="-2" max="2" step="0.01"></div>
             </article>
             <article class="a2">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-l" value="linear">
@@ -137,5 +137,9 @@
             </article>
         </section>
     </main>
+
+    <script type="text/javascript">
+        const canvas = document.getElementById('canvas');
+    </script>
 </body>
 </html>
