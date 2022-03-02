@@ -208,12 +208,12 @@
         let x2 = document.getElementById('x2').value;
         let y2 = document.getElementById('y2').value;
         //Canvas
-        window.onload = canvas;
+        window.onload = firstCanvas;
         const cv = document.getElementById('canvas');
         const ctx = cv.getContext('2d');
         const cvW = cv.offsetWidth;
         const cvH = cv.offsetHeight;
-        const cvBgClr = "#ffffff00";
+        const cvBgClr = "#f6f6f6";
         cv.width = cvW; 
         cv.height = cvH;
         const cvS = cvW; 
@@ -227,26 +227,60 @@
         ctx.moveTo(cvStartx, cvStarty);
         ctx.stroke();
         ctx.lineTo(cvEndx,cvEndy);
-        
-        function canvas(){
+        function firstCanvas(){
             x1 = x1*cvS;
             y1 = y1*cvS;
             x2 = x2*cvS;
             y2 = y2*cvS;
-
             if (cv.getContext('2d')) {
                 ctx.fillStyle = cvBgClr;
                 ctx.fillRect(0,0,cvS,cvS);
-
-
+                
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
                 ctx.lineTo(cvEndx,cvEndy);
                 ctx.stroke();
-                // (0.42, 0.0, 0.58, 1.0)
+
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, y1, x2, y2, cvEndx,cvEndy);
+                ctx.bezierCurveTo(x1, cvS, cvS-145, cvS-250, cvEndx,cvEndy);
+                ctx.strokeStyle= "#000";
+                ctx.stroke();
+
+                ctx.lineWidth= 2;
+                ctx.beginPath();
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.lineTo(x1, cvStarty);
+                ctx.strokeStyle= "pink";
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(cvEndx, cvEndy);
+                ctx.lineTo(x2, cvEndy);
+                ctx.strokeStyle= "pink";
+                ctx.stroke();
+            }
+        }
+        function canvas(){
+            // x1 = x1*cvS;
+            // y1 = y1*cvS;
+            // x2 = x2*cvS;
+            // y2 = y2*cvS;
+            x1 = event.target.value*cvS;
+
+
+            if (cv.getContext('2d')) {
+                ctx.fillStyle = cvBgClr;
+                ctx.fillRect(0,0,cvS,cvS);
+                
+                ctx.beginPath();
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.lineTo(cvEndx,cvEndy);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.bezierCurveTo(x1, cvS, cvS-145, cvS-250, cvEndx,cvEndy);
                 ctx.strokeStyle= "#000";
                 ctx.stroke();
 
@@ -293,7 +327,6 @@
         // Ani Timging Function
         function setAniTiming(){
             let v = event.target.value;
-            
             if (v === '0.0, 0.0, 0.58, 1.0') {
                 document.getElementById('x1').value = 0.0;
                 document.getElementById('y1').value = 0.0;
