@@ -227,10 +227,10 @@
         ctx.lineTo(cvEndx,cvEndy);
         
         function canvas(){
-            x1 = x1*cvS*2;
-            y1 = y1*cvS*2;
-            x2 = x2*cvS*2;
-            y2 = y2*cvS*2;
+            x1 = x1*cvS;
+            y1 = y1*cvS;
+            x2 = x2*cvS;
+            y2 = y2*cvS;
 
             if (cv && cv.getContext('2d')) {
                 ctx.beginPath();
@@ -253,7 +253,7 @@
                 
                 ctx.beginPath();
                 ctx.moveTo(cvEndx, cvEndy);
-                ctx.lineTo(x2, y2);
+                ctx.lineTo(x2, cvEndy);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
             }
