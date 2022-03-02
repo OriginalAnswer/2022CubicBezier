@@ -243,7 +243,7 @@
 
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, cvS, cvS-145, cvS-250, cvEndx,cvEndy);
+                ctx.bezierCurveTo(x1, cvS, cvS-x2, cvS-y2, cvEndx,cvEndy);
                 ctx.strokeStyle= "#000";
                 ctx.stroke();
 
@@ -267,6 +267,7 @@
             // x2 = x2*cvS;
             // y2 = y2*cvS;
             x1 = event.target.value*cvS;
+            // y1 = event.target.value*cvS;
 
 
             if (cv.getContext('2d')) {
@@ -280,7 +281,7 @@
 
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, cvS, cvS-145, cvS-250, cvEndx,cvEndy);
+                ctx.bezierCurveTo(x1, cvS, cvS-x2, cvS-y2, cvEndx,cvEndy);
                 ctx.strokeStyle= "#000";
                 ctx.stroke();
 
