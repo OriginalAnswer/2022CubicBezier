@@ -75,7 +75,7 @@
         /* Ball */
         .s0{padding: 0px;}
         #ball{
-            animation: position 2s 1s forwards infinite linear;
+            animation: position 2s 1s forwards infinite ease-in-out;
             left: 0%;
             position: relative;
             border-radius: 50px;
@@ -161,22 +161,19 @@
     </style>
 </head>
 <body>
-    <main>
-        <section class="s0">
-            <div id="ball"></div>
-        </section>
         <section class="s2">
             <canvas id="canvas" width="300px" height="300px"></canvas>
-            <div class="bar1"></div>
-            <div class="bar2"></div>
+            <!-- <div class="bar1"></div>
+            <div class="bar2"></div> -->
         </section>
+        <section class="s0"><div id="ball"></div></section>
         <section class="s1"><h3 id="dp-cb">cubic-bezier(x1, y1, x2, y2)</h3></section>
         <section class="s3">
             <article class="a1">
-                <div>x1 : <input oninput="setDPCB()" id="x1" value="0" type="range" min="0" max="1" step="0.01"></div>
-                <div>y1 : <input oninput="setDPCB()" id="y1" value="0" type="range" min="-2" max="2" step="0.01"></div>
-                <div>x2 : <input oninput="setDPCB()" id="x2" value="0" type="range" min="0" max="1" step="0.01"></div>
-                <div>y2 : <input oninput="setDPCB()" id="y2" value="0" type="range" min="-2" max="2" step="0.01"></div>
+                <div>x1 : <input oninput="canvas(), setDPCB()" id="x1" value="0.42" type="range" min="0" max="1" step="0.01"></div>
+                <div>y1 : <input oninput="canvas(), setDPCB()" id="y1" value="0" type="range" min="-2" max="2" step="0.01"></div>
+                <div>x2 : <input oninput="canvas(), setDPCB()" id="x2" value="0.58," type="range" min="0" max="1" step="0.01"></div>
+                <div>y2 : <input oninput="canvas(), setDPCB()" id="y2" value="1" type="range" min="-2" max="2" step="0.01"></div>
             </article>
             <form class="a2" onchange="setAniTiming()">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-l" value="0.0, 0.0, 1.0, 1.0">
@@ -204,44 +201,59 @@
     </main>
 
     <script type="text/javascript">
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        let x1 = document.getElementById('x1').value;
+        let y1 = document.getElementById('y1').value;
+        let x2 = document.getElementById('x2').value;
+        let y2 = document.getElementById('y2').value;
         //Canvas
         window.onload = canvas;
         const cv = document.getElementById('canvas');
         const ctx = cv.getContext('2d');
-        const CV_W = cv.offsetWidth;
-        const CV_H = cv.offsetHeight;
-        // cv.width = CV_W; 
-        // cv.height = CV_H; 
+        const cvW = cv.offsetWidth;
+        const cvH = cv.offsetHeight;
+        cv.width = cvW; 
+        cv.height = cvH;
+        const cvS = cvW; 
+        const cvStartx = 0;
+        const cvStarty = cvS;
+        const cvEndx = cvS
+        const cvEndy = 0;
+        ctx.lineWidth= 3;
+        ctx.strokeStyle= "#dfdfdf";
+        ctx.beginPath();
+        ctx.moveTo(cvStartx, cvStarty);
+        ctx.stroke();
+        ctx.lineTo(cvEndx,cvEndy);
+        
         function canvas(){
-            let x1 = document.getElementById('x1').value;
-            let y1 = document.getElementById('y1').value;
-            let x2 = document.getElementById('x2').value;
-            let y2 = document.getElementById('y2').value;
+            x1 = x1*cvS*2;
+            y1 = y1*cvS*2;
+            x2 = x2*cvS*2;
+            y2 = y2*cvS*2;
 
             if (cv && cv.getContext('2d')) {
-                ctx.lineWidth= 2;
-                ctx.beginPath(0, 300);
-                ctx.moveTo(300, 0);
-                ctx.strokeStyle= "black";
+                ctx.beginPath();
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.lineTo(cvEndx,cvEndy);
+                ctx.stroke();
+                // (0.42, 0.0, 0.58, 1.0)
+                ctx.beginPath();
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.bezierCurveTo(x1, y1, x2, y2, cvEndx,cvEndy);
+                ctx.strokeStyle= "#000";
                 ctx.stroke();
 
                 ctx.lineWidth= 2;
                 ctx.beginPath();
-                ctx.moveTo(0, 300);
-                ctx.bezierCurveTo(100, 100, 200, 200, 300, 0);
-                ctx.strokeStyle= "blue";
-                ctx.stroke();
-
-                ctx.lineWidth= 1;
-                ctx.beginPath();
-                ctx.moveTo(0, 300);
-                ctx.lineTo(100, 100);
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.lineTo(x1, cvStarty);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
                 
                 ctx.beginPath();
-                ctx.moveTo(300, 0);
-                ctx.lineTo(200, 200);
+                ctx.moveTo(cvEndx, cvEndy);
+                ctx.lineTo(x2, y2);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
             }
@@ -275,20 +287,42 @@
         // Ani Timging Function
         function setAniTiming(){
             let v = event.target.value;
+            
+            
+            if (v == 0.0, 0.0, 0.58, 1.0) {
+                document.getElementById('x1').value = 0.0;
+                document.getElementById('y1').value = 0.0;
+                document.getElementById('x2').value = 0.58;
+                document.getElementById('y2').value = 1.0;
+            }else if (v === 0.42, 0.0, 0.58, 1.0) {
+                document.getElementById('x1').value = 0.42;
+                document.getElementById('y1').value = 0.0;
+                document.getElementById('x2').value = 0.58;
+                document.getElementById('y2').value = 1.0;
+            } else if (v === 0.42, 0.0, 1.0, 1.0) {
+                document.getElementById('x1').value = 0.42;
+                document.getElementById('y1').value = 0.0;
+                document.getElementById('x2').value = 1.0;
+                document.getElementById('y2').value = 1.0;
+            }else if (v === 0.0, 0.0, 1.0, 1.0) {
+                document.getElementById('x1').value = 0.0;
+                document.getElementById('y1').value = 0.0;
+                document.getElementById('x2').value = 1.0;
+                document.getElementById('y2').value = 1.0;
+            }
             dpCB.innerText = `cubic-bezier(${v})`;
             ball.style.animationTimingFunction = `cubic-bezier(${v})`;
-            
         }
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Cubic-Bezier
         const dpCB = document.getElementById('dp-cb');
         function setDPCB(){
-        let x1 = document.getElementById('x1').value;
-        let y1 = document.getElementById('y1').value;
-        let x2 = document.getElementById('x2').value;
-        let y2 = document.getElementById('y2').value;
-        dpCB.innerText = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
-        ball.style.animationTimingFunction = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
+            let x1 = document.getElementById('x1').value;
+            let y1 = document.getElementById('y1').value;
+            let x2 = document.getElementById('x2').value;
+            let y2 = document.getElementById('y2').value;
+            dpCB.innerText = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
+            ball.style.animationTimingFunction = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
         }
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
