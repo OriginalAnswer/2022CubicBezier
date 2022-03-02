@@ -133,6 +133,7 @@
         .a3,
         .a4{padding: 15px;}
         .a4>#durationValue{margin-top: 10px;}
+        .a2,
         .a4{
             height: auto;
             flex-direction: column;
@@ -172,7 +173,7 @@
             <article class="a1">
                 <div>x1 : <input oninput="canvas(), setDPCB()" id="x1" value="0.42" type="range" min="0" max="1" step="0.01"></div>
                 <div>y1 : <input oninput="canvas(), setDPCB()" id="y1" value="0" type="range" min="-2" max="2" step="0.01"></div>
-                <div>x2 : <input oninput="canvas(), setDPCB()" id="x2" value="0.58," type="range" min="0" max="1" step="0.01"></div>
+                <div>x2 : <input oninput="canvas(), setDPCB()" id="x2" value="0.58" type="range" min="0" max="1" step="0.01"></div>
                 <div>y2 : <input oninput="canvas(), setDPCB()" id="y2" value="1" type="range" min="-2" max="2" step="0.01"></div>
             </article>
             <form class="a2" onchange="setAniTiming()">
@@ -212,6 +213,7 @@
         const ctx = cv.getContext('2d');
         const cvW = cv.offsetWidth;
         const cvH = cv.offsetHeight;
+        const cvBgClr = "#ffffff00";
         cv.width = cvW; 
         cv.height = cvH;
         const cvS = cvW; 
@@ -232,7 +234,11 @@
             x2 = x2*cvS;
             y2 = y2*cvS;
 
-            if (cv && cv.getContext('2d')) {
+            if (cv.getContext('2d')) {
+                ctx.fillStyle = cvBgClr;
+                ctx.fillRect(0,0,cvS,cvS);
+
+
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
                 ctx.lineTo(cvEndx,cvEndy);
@@ -288,23 +294,22 @@
         function setAniTiming(){
             let v = event.target.value;
             
-            
-            if (v == 0.0, 0.0, 0.58, 1.0) {
+            if (v === '0.0, 0.0, 0.58, 1.0') {
                 document.getElementById('x1').value = 0.0;
                 document.getElementById('y1').value = 0.0;
                 document.getElementById('x2').value = 0.58;
                 document.getElementById('y2').value = 1.0;
-            }else if (v === 0.42, 0.0, 0.58, 1.0) {
+            }else if (v === '0.42, 0.0, 0.58, 1.0') {
                 document.getElementById('x1').value = 0.42;
                 document.getElementById('y1').value = 0.0;
                 document.getElementById('x2').value = 0.58;
                 document.getElementById('y2').value = 1.0;
-            } else if (v === 0.42, 0.0, 1.0, 1.0) {
+            } else if (v === '0.42, 0.0, 1.0, 1.0') {
                 document.getElementById('x1').value = 0.42;
                 document.getElementById('y1').value = 0.0;
                 document.getElementById('x2').value = 1.0;
                 document.getElementById('y2').value = 1.0;
-            }else if (v === 0.0, 0.0, 1.0, 1.0) {
+            }else if (v === '0.0, 0.0, 1.0, 1.0') {
                 document.getElementById('x1').value = 0.0;
                 document.getElementById('y1').value = 0.0;
                 document.getElementById('x2').value = 1.0;
