@@ -230,8 +230,11 @@
         function firstCanvas(){
             x1 = x1*cvS;
             y1 = y1*cvS;
+
             x2 = x2*cvS;
-            y2 = y2*cvS;
+            
+            y1 = cvS-y1;
+            x2 = cvS-x2;
             
             if (cv.getContext('2d')) {
                 ctx.fillStyle = cvBgClr;
@@ -240,28 +243,26 @@
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
                 ctx.lineTo(cvEndx,cvEndy);
-                ctx.strokeStyle= "#dfdfdf";
                 ctx.stroke();
 
-                ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
-                ctx.lineTo(x1, cvStarty);
+                ctx.bezierCurveTo(x1, y1, x2, y2, cvEndx,cvEndy);
+                ctx.strokeStyle= "#000";
+                ctx.stroke();
+
+                ctx.lineWidth= 5;
+                ctx.beginPath();
+                ctx.moveTo(cvStartx, cvStarty);
+                ctx.lineTo(x1, y1);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
                 
                 ctx.beginPath();
                 ctx.moveTo(cvEndx, cvEndy);
-                ctx.lineTo(x2, cvEndy);
+                ctx.lineTo(x2, y2);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
-                
-                ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, cvS, cvS-x2, cvS-y2, cvEndx,cvEndy);
-                ctx.strokeStyle= "#000";
-                ctx.stroke();
-
             }
         }
         function canvas(){
@@ -281,20 +282,20 @@
 
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, cvS, x2, cvS-y2, cvEndx,cvEndy);
+                ctx.bezierCurveTo(x1, y1, x2, y2, cvEndx,cvEndy);
                 ctx.strokeStyle= "#000";
                 ctx.stroke();
 
-                ctx.lineWidth= 2;
+                ctx.lineWidth= 5;
                 ctx.beginPath();
                 ctx.moveTo(cvStartx, cvStarty);
-                ctx.lineTo(x1, cvStarty);
+                ctx.lineTo(x1, y1);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
                 
                 ctx.beginPath();
                 ctx.moveTo(cvEndx, cvEndy);
-                ctx.lineTo(x2, cvEndy);
+                ctx.lineTo(x2, y2);
                 ctx.strokeStyle= "pink";
                 ctx.stroke();
             }
