@@ -103,6 +103,7 @@
         .s2 canvas{
             background-color: rgba(127, 255, 212, 0.166);
             width: var(--s-cnv);height: var(--s-cnv);
+            transform: rotate(180deg) rotateY(180deg);
         }
         .s2 .bar1,
         .s2 .bar2{
@@ -162,6 +163,7 @@
     </style>
 </head>
 <body>
+    <main>
         <section class="s2">
             <canvas id="canvas" width="300px" height="300px"></canvas>
             <!-- <div class="bar1"></div>
@@ -171,10 +173,10 @@
         <section class="s1"><h3 id="dp-cb">cubic-bezier(x1, y1, x2, y2)</h3></section>
         <section class="s3">
             <article class="a1">
-                <div>x1 : <input oninput="canvas(), setDPCB()" id="x1" value="0.42" type="range" min="0" max="1" step="0.01"></div>
-                <div>y1 : <input oninput="canvas(), setDPCB()" id="y1" value="0" type="range" min="-2" max="2" step="0.01"></div>
-                <div>x2 : <input oninput="canvas(), setDPCB()" id="x2" value="0.58" type="range" min="0" max="1" step="0.01"></div>
-                <div>y2 : <input oninput="canvas(), setDPCB()" id="y2" value="1" type="range" min="-2" max="2" step="0.01"></div>
+                <div>x1 : <input oninput="setDPCB()" id="x1" value="0.42" type="range" min="0" max="1" step="0.01"></div>
+                <div>y1 : <input oninput="setDPCB()" id="y1" value="0" type="range" min="-2" max="2" step="0.01"></div>
+                <div>x2 : <input oninput="setDPCB()" id="x2" value="0.58" type="range" min="0" max="1" step="0.01"></div>
+                <div>y2 : <input oninput="setDPCB()" id="y2" value="1" type="range" min="-2" max="2" step="0.01"></div>
             </article>
             <form class="a2" onchange="setAniTiming()">
                 <input class="hidden" type="radio" name="aniTimging" id="ani-t-l" value="0.0, 0.0, 1.0, 1.0">
@@ -203,101 +205,121 @@
 
     <script type="text/javascript">
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        let x1 = document.getElementById('x1').value;
-        let y1 = document.getElementById('y1').value;
-        let x2 = document.getElementById('x2').value;
-        let y2 = document.getElementById('y2').value;
         //Canvas
-        window.onload = firstCanvas;
+        window.onload = cnvs;
         const cv = document.getElementById('canvas');
         const ctx = cv.getContext('2d');
         const cvW = cv.offsetWidth;
         const cvH = cv.offsetHeight;
         const cvBgClr = "#f6f6f6";
+
+
         cv.width = cvW; 
         cv.height = cvH;
         const cvS = cvW; 
-        const cvStartx = 0;
-        const cvStarty = cvS;
-        const cvEndx = cvS
-        const cvEndy = 0;
-        ctx.lineWidth= 3;
-        ctx.strokeStyle= "#dfdfdf";
-        ctx.beginPath();
-        ctx.moveTo(cvStartx, cvStarty);
-        ctx.stroke();
-        ctx.lineTo(cvEndx,cvEndy);
-        function firstCanvas(){
-            x1 = x1*cvS;
-            y1 = y1*cvS;
+        const pStartx = 0;
+        const pStarty = 0;
+        const pEndx = cvS;
+        const pEndy = cvS;
 
-            x2 = x2*cvS;
-            
-            y1 = cvS-y1;
-            x2 = cvS-x2;
-            
+        let x1 = document.getElementById('x1').value;//0.42
+        let y1 = document.getElementById('y1').value;//0
+        let x2 = document.getElementById('x2').value;//0.58
+        let y2 = document.getElementById('y2').value;//1
+
+        function cnvs(a,b,c,d){
+            x1 = cvS*x1;//105
+            y1 = cvS*y1;//0
+            x2 = cvS*x2;//145
+            y2 = cvS*y2;//250
             if (cv.getContext('2d')) {
+                ctx.clearRect(0,0,250,250);
+
                 ctx.fillStyle = cvBgClr;
-                ctx.fillRect(0,0,cvS,cvS);
-                
+                ctx.fillRect(0,0,250,250);
+                //중간 선
                 ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.lineTo(cvEndx,cvEndy);
+                ctx.moveTo(pStartx,pStarty);
+                ctx.lineTo(pEndx,pEndy);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'lightgray';
+                ctx.closePath();
                 ctx.stroke();
+                //P1
+                ctx.beginPath();
+                ctx.moveTo(pStartx,pStarty);
+                ctx.lineTo(x1,y1);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'red';
+                ctx.closePath();
+                ctx.stroke();
+                //P2
+                ctx.beginPath();
+                ctx.moveTo(pEndx,pEndy);
+                ctx.lineTo(x2,y2);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'green';
+                ctx.closePath();
+                ctx.stroke();
+                //베지어 커브
+                ctx.beginPath();
+                ctx.moveTo(pStartx,pStarty);
+                ctx.bezierCurveTo(x1,y1,x2,y2,pEndx,pEndy);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'blue';
+                ctx.stroke();
+                ctx.closePath();
 
-                ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, y1, x2, y2, cvEndx,cvEndy);
-                ctx.strokeStyle= "#000";
-                ctx.stroke();
-
-                ctx.lineWidth= 5;
-                ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.lineTo(x1, y1);
-                ctx.strokeStyle= "pink";
-                ctx.stroke();
-                
-                ctx.beginPath();
-                ctx.moveTo(cvEndx, cvEndy);
-                ctx.lineTo(x2, y2);
-                ctx.strokeStyle= "pink";
-                ctx.stroke();
             }
         }
-        function canvas(){
-            x1 = event.target.value*cvS;
-            x2 = event.target.value*cvS;
-            x2 = cvS-x2;
-            y2 = cvS-y2;
-            console.log(x2);
+        function cnvsChange(a,b,c,d){
+            x1 = a;
+            y1 = b;
+            x2 = c;
+            y2 = d;
+
+            x1 = cvS*x1;//105
+            y1 = cvS*y1;//0
+            x2 = cvS*x2;//145
+            y2 = cvS*y2;//250
             if (cv.getContext('2d')) {
+                ctx.clearRect(0,0,250,250);
+
                 ctx.fillStyle = cvBgClr;
-                ctx.fillRect(0,0,cvS,cvS);
-                
+                ctx.fillRect(0,0,250,250);
+                //중간 선
                 ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.lineTo(cvEndx,cvEndy);
+                ctx.moveTo(pStartx,pStarty);
+                ctx.lineTo(pEndx,pEndy);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'lightgray';
+                ctx.closePath();
                 ctx.stroke();
+                //P1
+                ctx.beginPath();
+                ctx.moveTo(pStartx,pStarty);
+                ctx.lineTo(x1,y1);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'red';
+                ctx.closePath();
+                ctx.stroke();
+                //P2
+                ctx.beginPath();
+                ctx.moveTo(pEndx,pEndy);
+                ctx.lineTo(x2,y2);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'green';
+                ctx.closePath();
+                ctx.stroke();
+                //베지어 커브
+                ctx.beginPath();
+                ctx.moveTo(pStartx,pStarty);
+                ctx.bezierCurveTo(x1,y1,x2,y2,pEndx,pEndy);
+                ctx.lineWidth = '1';
+                ctx.strokeStyle = 'blue';
+                ctx.stroke();
+                ctx.closePath();
 
-                ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.bezierCurveTo(x1, y1, x2, y2, cvEndx,cvEndy);
-                ctx.strokeStyle= "#000";
-                ctx.stroke();
-
-                ctx.lineWidth= 5;
-                ctx.beginPath();
-                ctx.moveTo(cvStartx, cvStarty);
-                ctx.lineTo(x1, y1);
-                ctx.strokeStyle= "pink";
-                ctx.stroke();
-                
-                ctx.beginPath();
-                ctx.moveTo(cvEndx, cvEndy);
-                ctx.lineTo(x2, y2);
-                ctx.strokeStyle= "pink";
-                ctx.stroke();
             }
         }
         
@@ -330,28 +352,29 @@
         function setAniTiming(){
             let v = event.target.value;
             if (v === '0.0, 0.0, 0.58, 1.0') {
-                document.getElementById('x1').value = 0.0;
-                document.getElementById('y1').value = 0.0;
-                document.getElementById('x2').value = 0.58;
-                document.getElementById('y2').value = 1.0;
+                x1 = 0.0;
+                y1 = 0.0;
+                x2 = 0.58;
+                y2 = 1.0;
             }else if (v === '0.42, 0.0, 0.58, 1.0') {
-                document.getElementById('x1').value = 0.42;
-                document.getElementById('y1').value = 0.0;
-                document.getElementById('x2').value = 0.58;
-                document.getElementById('y2').value = 1.0;
+                x1 = 0.42;
+                y1 = 0.0;
+                x2 = 0.58;
+                y2 = 1.0;
             } else if (v === '0.42, 0.0, 1.0, 1.0') {
-                document.getElementById('x1').value = 0.42;
-                document.getElementById('y1').value = 0.0;
-                document.getElementById('x2').value = 1.0;
-                document.getElementById('y2').value = 1.0;
+                x1 = 0.42;
+                y1 = 0.0;
+                x2 = 1.0;
+                y2 = 1.0;
             }else if (v === '0.0, 0.0, 1.0, 1.0') {
-                document.getElementById('x1').value = 0.0;
-                document.getElementById('y1').value = 0.0;
-                document.getElementById('x2').value = 1.0;
-                document.getElementById('y2').value = 1.0;
+                x1 = 0.0;
+                y1 = 0.0;
+                x2 = 1.0;
+                y2 = 1.0;
             }
             dpCB.innerText = `cubic-bezier(${v})`;
             ball.style.animationTimingFunction = `cubic-bezier(${v})`;
+            cnvsChange(x1,y1,x2,y2);
         }
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Cubic-Bezier
@@ -363,6 +386,7 @@
             let y2 = document.getElementById('y2').value;
             dpCB.innerText = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
             ball.style.animationTimingFunction = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
+            cnvsChange(x1,y1,x2,y2);
         }
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
